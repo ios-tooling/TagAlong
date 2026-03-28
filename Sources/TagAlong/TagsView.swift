@@ -12,10 +12,14 @@ import SwiftUI
 public struct TagsView: View {
 	let tags: [Tag]
 	
-	public init(tags: TagCollection) {
-		self.tags = tags.tags
-	}
-	
+    public init(tags: TagCollection) {
+        self.tags = tags.tags
+    }
+    
+    public init(_ tags: TagCollection) {
+        self.tags = tags.tags
+    }
+    
 	public var body: some View {
 		if !tags.isEmpty {
 			HStack(spacing: 4) {
