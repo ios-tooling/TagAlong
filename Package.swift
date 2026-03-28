@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "TagAlong",
 	 platforms: [
-				 .macOS(.v13),
+				 .macOS(.v14),
 				 .iOS(.v15),
 				 .watchOS(.v8)
 		  ],

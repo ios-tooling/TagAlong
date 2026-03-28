@@ -28,8 +28,8 @@ public struct TagsView: View {
 						.font(.caption2)
 						.padding(.horizontal, 6)
 						.padding(.vertical, 2)
-						.background(tag.color.swiftUIColor.opacity(0.2))
-						.foregroundStyle(tag.color.swiftUIColor)
+						.background(tag.tagColor.opacity(0.2))
+						.foregroundStyle(tag.tagColor)
 						.clipShape(Capsule())
 				}
 			}

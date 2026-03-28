@@ -34,13 +34,20 @@ extension TagColor {
 }
 
 @available(iOS 17, macOS 14, *)
-private extension Color {
+extension Color {
 	init(hex: String) {
 		let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
 		guard let int = UInt64(hex, radix: 16) else { self = .gray; return }
-		
+		self.init(hex: int, sizeHint: hex.count)
+	}
+
+	init(hex int: UInt32) {
+		self.init(hex: UInt64(int), sizeHint: 4)
+	}
+	
+	init(hex int: UInt64, sizeHint: Int = 8) {
 		let r, g, b, a: Double
-		switch hex.count {
+		switch sizeHint {
 		case 3:
 			r = Double((int >> 8) & 0xF) / 15
 			g = Double((int >> 4) & 0xF) / 15
