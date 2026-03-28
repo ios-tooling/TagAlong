@@ -1,0 +1,65 @@
+//
+//  File.swift
+//  TagAlong
+//
+//  Created by Ben Gottlieb on 3/27/26.
+//
+
+import Foundation
+
+public struct TagColor: Codable, Sendable, Hashable {
+	public let rawValue: String
+	
+	public init(_ rawValue: String) { self.rawValue = rawValue }
+	
+	public static let red    = TagColor("#FF0000")
+	public static let orange = TagColor("#FFA500")
+	public static let yellow = TagColor("#FFFF00")
+	public static let green  = TagColor("#008000")
+	public static let blue   = TagColor("#0000FF")
+	public static let purple = TagColor("#800080")
+	public static let pink   = TagColor("#FFC0CB")
+	public static let brown  = TagColor("#A52A2A")
+	public static let gray   = TagColor("#808080")
+}
+
+#if canImport(SwiftUI)
+import SwiftUI
+
+@available(iOS 17, macOS 14, *)
+extension TagColor {
+	public var swiftUIColor: Color {
+		Color(hex: rawValue)
+	}
+}
+
+@available(iOS 17, macOS 14, *)
+private extension Color {
+	init(hex: String) {
+		let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
+		guard let int = UInt64(hex, radix: 16) else { self = .gray; return }
+		
+		let r, g, b, a: Double
+		switch hex.count {
+		case 3:
+			r = Double((int >> 8) & 0xF) / 15
+			g = Double((int >> 4) & 0xF) / 15
+			b = Double(int & 0xF) / 15
+			a = 1
+		case 6:
+			r = Double((int >> 16) & 0xFF) / 255
+			g = Double((int >> 8) & 0xFF) / 255
+			b = Double(int & 0xFF) / 255
+			a = 1
+		case 8:
+			r = Double((int >> 24) & 0xFF) / 255
+			g = Double((int >> 16) & 0xFF) / 255
+			b = Double((int >> 8) & 0xFF) / 255
+			a = Double(int & 0xFF) / 255
+		default:
+			self = .gray; return
+		}
+		self.init(red: r, green: g, blue: b, opacity: a)
+	}
+}
+#endif
