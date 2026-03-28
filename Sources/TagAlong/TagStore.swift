@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TagStore.swift
 //  TagAlong
 //
 //  Created by Ben Gottlieb on 3/28/26.
@@ -15,7 +15,7 @@ import SwiftUI
 	public func register(_ tag: Tag, color: TagColor? = nil) {
 		var newTag = tag
 		if let color { newTag.color = color }
-		if tag.color == nil { newTag.color = knownTags[tag.id]?.color }
+		if newTag.color == nil { newTag.color = knownTags[tag.id]?.color }
 		knownTags[tag.id] = newTag
 	}
 	

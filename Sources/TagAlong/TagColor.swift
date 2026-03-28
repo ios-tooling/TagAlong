@@ -35,6 +35,18 @@ extension TagColor {
 
 @available(iOS 17, macOS 14, *)
 extension Color {
+	var luminosity: Double {
+		#if os(macOS)
+				NSColor(self).luminosity
+		#else
+				UIColor(self).luminosity
+		#endif
+	}
+
+	var textColor: Color {
+		luminosity <= 0.50 ? .white : .black
+	}
+	
 	init(hex: String) {
 		let hex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
 		guard let int = UInt64(hex, radix: 16) else { self = .gray; return }
@@ -53,6 +65,11 @@ extension Color {
 			g = Double((int >> 4) & 0xF) / 15
 			b = Double(int & 0xF) / 15
 			a = 1
+		case 4:
+			r = Double((int >> 12) & 0xF) / 15
+			g = Double((int >> 8) & 0xF) / 15
+			b = Double((int >> 4) & 0xF) / 15
+			a = Double(int & 0xF) / 15
 		case 6:
 			r = Double((int >> 16) & 0xFF) / 255
 			g = Double((int >> 8) & 0xFF) / 255
@@ -67,6 +84,32 @@ extension Color {
 			self = .gray; return
 		}
 		self.init(red: r, green: g, blue: b, opacity: a)
+	}
+}
+#endif
+
+#if os(macOS)
+extension NSColor {
+	var luminosity: Double {
+		var r: CGFloat = 0.0
+		var g: CGFloat = 0.0
+		var b: CGFloat = 0.0
+		var a: CGFloat = 0.0
+		self.getRed(&r, green: &g, blue: &b, alpha: &a)
+		return 0.2126 * r + g * 0.7152 + 0.0722 * b
+	}
+}
+#endif
+
+#if os(iOS) || os(watchOS) || os(tvOS) || os(visionOS)
+extension UIColor {
+	var luminosity: Double {
+		var r: CGFloat = 0.0
+		var g: CGFloat = 0.0
+		var b: CGFloat = 0.0
+		var a: CGFloat = 0.0
+		self.getRed(&r, green: &g, blue: &b, alpha: &a)
+		return 0.2126 * r + g * 0.7152 + 0.0722 * b
 	}
 }
 #endif
