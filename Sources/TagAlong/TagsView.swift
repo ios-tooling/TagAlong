@@ -17,15 +17,17 @@ public struct TagsView: View {
 	}
 	
 	public var body: some View {
-		HStack(spacing: 4) {
-			ForEach(tags, id: \.self) { tag in
-				Text(tag.name)
-					.font(.caption2)
-					.padding(.horizontal, 6)
-					.padding(.vertical, 2)
-					.background(tag.color.swiftUIColor.opacity(0.2))
-					.foregroundStyle(tag.color.swiftUIColor)
-					.clipShape(Capsule())
+		if !tags.isEmpty {
+			HStack(spacing: 4) {
+				ForEach(tags, id: \.self) { tag in
+					Text(tag.name)
+						.font(.caption2)
+						.padding(.horizontal, 6)
+						.padding(.vertical, 2)
+						.background(tag.color.swiftUIColor.opacity(0.2))
+						.foregroundStyle(tag.color.swiftUIColor)
+						.clipShape(Capsule())
+				}
 			}
 		}
 	}
