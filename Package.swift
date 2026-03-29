@@ -7,7 +7,7 @@ let package = Package(
     name: "TagAlong",
 	 platforms: [
 				 .macOS(.v14),
-				 .iOS(.v15),
+				 .iOS(.v14),
 				 .watchOS(.v8)
 		  ],
     products: [
