@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol TagCollection {
+public protocol TagCollection: Sendable {
 	var tags: [Tag] { get }
 }
 
