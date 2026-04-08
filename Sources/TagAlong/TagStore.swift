@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-@MainActor public class TagStore {
+@available(iOS 17.0, macOS 15, *)
+@MainActor @Observable public class TagStore {
 	public static let instance = TagStore()
 	
 	var knownTags: [String: Tag] = [:]
@@ -27,6 +28,7 @@ import SwiftUI
 	}
 }
 
+@available(iOS 17.0, macOS 15, *)
 public extension TagStore {
 	static nonisolated func register(_ tag: Tag, color: TagColor? = nil) {
 		Task { @MainActor in

@@ -55,7 +55,11 @@ public struct Tag: Codable, Sendable, Hashable, Equatable {
 	
 	@MainActor public var tagColor: Color {
 		if let color { return color.swiftUIColor }
-		return TagStore.instance.color(for: self)
+        if #available(iOS 17.0, *) {
+            return TagStore.instance.color(for: self)
+        } else {
+            return .black
+        }
 	}
 }
 
