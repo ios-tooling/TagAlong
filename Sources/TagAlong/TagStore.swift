@@ -20,10 +20,10 @@ import SwiftUI
 		knownTags[tag.id] = newTag
 	}
 	
-	func color(for tag: Tag) -> Color {
-		if let color = tag.color { return color.swiftUIColor }
+	public func color(for tag: Tag) -> Color {
 		if let known = knownTags[tag.id]?.color { return known.swiftUIColor }
-		
+        if let color = tag.color { return color.swiftUIColor }
+
 		return tag.name.data(using: .utf8)?.extractColor() ?? .black
 	}
 }
