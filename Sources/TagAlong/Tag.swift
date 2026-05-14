@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct Tag: Codable, Sendable, Hashable, Equatable {
+public struct Tag: Codable, Sendable, Hashable, Equatable, Identifiable {
 	public var name: String
 	public var color: TagColor?
 	public var id: String

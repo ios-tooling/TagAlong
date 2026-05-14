@@ -42,7 +42,7 @@ public struct AddTagsField: View {
     public var body: some View {
         let colors = Dictionary(
             uniqueKeysWithValues: tags.map { tag in
-                let color = tag.color != nil ? tag.tagColor : (tagColorProvider?(tag)?.swiftUIColor ?? tag.tagColor)
+                let color = tag.color != nil ? tag.tagColor : ((tagColorProvider?(tag))?.swiftUIColor ?? tag.tagColor)
                 return (tag.name.lowercased(), color)
             }
         )
