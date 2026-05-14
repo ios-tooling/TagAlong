@@ -31,6 +31,7 @@ public struct TokenTextField: View {
     var delimiters: TokenDelimiters
     var showTokens: Bool
     var tokenColors: [String: Color]
+    var maxTagLength: Int?
     var suggestionsProvider: ((String) -> [String])?
 
     @State private var inputText = ""
@@ -42,6 +43,7 @@ public struct TokenTextField: View {
         delimiters: TokenDelimiters = .space,
         showTokens: Bool = true,
         tokenColors: [String: Color] = [:],
+        maxTagLength: Int? = nil,
         suggestionsProvider: ((String) -> [String])? = nil
     ) {
         self.placeholder = placeholder
@@ -49,29 +51,23 @@ public struct TokenTextField: View {
         self.delimiters = delimiters
         self.showTokens = showTokens
         self.tokenColors = tokenColors
+        self.maxTagLength = maxTagLength
         self.suggestionsProvider = suggestionsProvider
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if showTokens && !tokens.isEmpty {
-                FlowLayout(spacing: 4, lineSpacing: 4) {
+            if showTokens {
+                FlowLayout(spacing: 4, lineSpacing: 4, stretchLast: true) {
                     ForEach(tokens, id: \.self) { token in
                         tokenCapsule(token)
                     }
+                    inputField
+                        .frame(minWidth: 80)
                 }
+            } else {
+                inputField
             }
-
-            TextField(placeholder, text: $inputText)
-                .textFieldStyle(.plain)
-                .focused($isFocused)
-                .submitLabel(delimiters.contains(.returnKey) ? .continue : .done)
-                .onSubmit {
-                    if delimiters.contains(.returnKey) { commitInput() }
-                }
-                .onChange(of: inputText) { _, new in
-                    handleDelimiters(in: new)
-                }
 
             if isFocused, let provider = suggestionsProvider {
                 let suggestions = provider(inputText)
@@ -82,6 +78,23 @@ public struct TokenTextField: View {
         }
         .contentShape(Rectangle())
         .onTapGesture { isFocused = true }
+    }
+
+    private var inputField: some View {
+        TextField(placeholder, text: $inputText)
+            .textFieldStyle(.plain)
+            .focused($isFocused)
+            .submitLabel(delimiters.contains(.returnKey) ? .continue : .done)
+            .onSubmit {
+                if delimiters.contains(.returnKey) { commitInput() }
+            }
+            .onChange(of: inputText) { _, new in
+                if let max = maxTagLength, new.count > max {
+                    inputText = String(new.prefix(max))
+                    return
+                }
+                handleDelimiters(in: new)
+            }
     }
 
     private func suggestionsRow(_ suggestions: [String]) -> some View {
@@ -105,6 +118,8 @@ public struct TokenTextField: View {
         let bg = tokenColors[token.lowercased()] ?? Color.accentColor.opacity(0.15)
         return HStack(spacing: 3) {
             Text(token)
+                .lineLimit(1)
+                .truncationMode(.middle)
             Button { removeToken(token) } label: {
                 Image(systemName: "xmark")
                     .font(.system(size: 8, weight: .bold))
@@ -117,6 +132,7 @@ public struct TokenTextField: View {
         .background(bg)
         .foregroundStyle(bg.textColor)
         .clipShape(Capsule())
+        .frame(maxWidth: 200)
     }
 
     private func handleDelimiters(in text: String) {
@@ -140,6 +156,7 @@ public struct TokenTextField: View {
         guard !trimmed.isEmpty else { return }
         guard !tokens.contains(where: { $0.lowercased() == trimmed.lowercased() }) else {
             inputText = ""
+            Task { @MainActor in isFocused = true }
             return
         }
         tokens.append(trimmed)

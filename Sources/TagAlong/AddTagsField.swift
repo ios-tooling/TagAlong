@@ -17,6 +17,7 @@ public struct AddTagsField: View {
     let showAllTags: Bool
     var availableTags: [Tag]
     var delimiters: TokenDelimiters
+    var maxTagLength: Int?
 
     @Environment(\.onTagCreated) private var onTagCreated
     @Environment(\.onTagRemoved) private var onTagRemoved
@@ -26,13 +27,15 @@ public struct AddTagsField: View {
         tags: Binding<[Tag]>,
         showAllTags: Bool = false,
         availableTags: [Tag]? = nil,
-        delimiters: TokenDelimiters = .returnKey
+        delimiters: TokenDelimiters = .returnKey,
+        maxTagLength: Int? = nil
     ) {
         self.label = label
         _tags = tags
         self.showAllTags = showAllTags
         self.availableTags = availableTags ?? Array(TagStore.instance.knownTags.values)
         self.delimiters = delimiters
+        self.maxTagLength = maxTagLength
     }
 
     public var body: some View {
@@ -45,6 +48,7 @@ public struct AddTagsField: View {
             delimiters: delimiters,
             showTokens: showAllTags,
             tokenColors: colors,
+            maxTagLength: maxTagLength,
             suggestionsProvider: suggestions
         )
         .padding(8)
