@@ -21,6 +21,7 @@ public struct AddTagsField: View {
 
     @Environment(\.onTagCreated) private var onTagCreated
     @Environment(\.onTagRemoved) private var onTagRemoved
+    @Environment(\.tagColorProvider) private var tagColorProvider
 
     public init(
         _ label: String = "Add Tag",
@@ -40,7 +41,10 @@ public struct AddTagsField: View {
 
     public var body: some View {
         let colors = Dictionary(
-            uniqueKeysWithValues: tags.map { ($0.name.lowercased(), $0.tagColor) }
+            uniqueKeysWithValues: tags.map { tag in
+                let color = tag.color != nil ? tag.tagColor : (tagColorProvider?(tag)?.swiftUIColor ?? tag.tagColor)
+                return (tag.name.lowercased(), color)
+            }
         )
         TokenTextField(
             label,
@@ -69,9 +73,11 @@ public struct AddTagsField: View {
                 }
 
                 let newTags: [Tag] = newNames.map { name in
-                    tags.first { $0.name.lowercased() == name.lowercased() }
-                        ?? availableTags.first { $0.name.lowercased() == name.lowercased() }
-                        ?? Tag(name)
+                    if let existing = tags.first(where: { $0.name.lowercased() == name.lowercased() }) { return existing }
+                    if let available = availableTags.first(where: { $0.name.lowercased() == name.lowercased() }) { return available }
+                    var newTag = Tag(name)
+                    if let provider = tagColorProvider { newTag.color = provider(newTag) }
+                    return newTag
                 }
 
                 for tag in newTags where !oldLower.contains(tag.name.lowercased()) {

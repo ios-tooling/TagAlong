@@ -73,7 +73,8 @@ public struct FlowLayout: Layout {
 	private func makeLines(maxWidth: CGFloat, subviews: Subviews) -> [Line] {
 		var lines: [Line] = [Line()]
 		for index in subviews.indices {
-			let size = subviews[index].sizeThatFits(.unspecified)
+			let natural = subviews[index].sizeThatFits(.unspecified)
+			let size = CGSize(width: min(natural.width, maxWidth), height: natural.height)
 			let projectedWidth = lines[lines.count - 1].width
 				+ (lines[lines.count - 1].indices.isEmpty ? 0 : spacing)
 				+ size.width

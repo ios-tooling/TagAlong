@@ -132,7 +132,6 @@ public struct TokenTextField: View {
         .background(bg)
         .foregroundStyle(bg.textColor)
         .clipShape(Capsule())
-        .frame(maxWidth: 200)
     }
 
     private func handleDelimiters(in text: String) {

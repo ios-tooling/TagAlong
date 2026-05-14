@@ -5,24 +5,11 @@
 
 import SwiftUI
 
-private struct OnTagCreatedKey: EnvironmentKey {
-    static let defaultValue: ((Tag) -> Void)? = nil
-}
-
-private struct OnTagRemovedKey: EnvironmentKey {
-    static let defaultValue: ((Tag) -> Void)? = nil
-}
-
 public extension EnvironmentValues {
-    var onTagCreated: ((Tag) -> Void)? {
-        get { self[OnTagCreatedKey.self] }
-        set { self[OnTagCreatedKey.self] = newValue }
-    }
-
-    var onTagRemoved: ((Tag) -> Void)? {
-        get { self[OnTagRemovedKey.self] }
-        set { self[OnTagRemovedKey.self] = newValue }
-    }
+    @Entry var onTagCreated: ((Tag) -> Void)? = nil
+    @Entry var onTagRemoved: ((Tag) -> Void)? = nil
+    /// Called to supply a color for any tag that doesn't already have one.
+    @Entry var tagColorProvider: ((Tag) -> TagColor)? = nil
 }
 
 public extension View {
@@ -32,5 +19,9 @@ public extension View {
 
     func onTagRemoved(_ action: @escaping (Tag) -> Void) -> some View {
         environment(\.onTagRemoved, action)
+    }
+
+    func tagColorProvider(_ provider: @escaping (Tag) -> TagColor) -> some View {
+        environment(\.tagColorProvider, provider)
     }
 }
