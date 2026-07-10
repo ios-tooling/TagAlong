@@ -21,6 +21,7 @@ public extension View {
         environment(\.onTagRemoved, action)
     }
 
+    @available(*, deprecated, message: "Set TagStore.instance.colorAssigner instead; the store assigns and records colors when tags are registered.")
     func tagColorProvider(_ provider: @escaping (Tag) -> TagColor) -> some View {
         environment(\.tagColorProvider, provider)
     }

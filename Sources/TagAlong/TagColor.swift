@@ -26,14 +26,12 @@ public struct TagColor: Codable, Sendable, Hashable {
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(macOS 14, *)
 extension TagColor {
 	public var swiftUIColor: Color {
 		Color(hex: rawValue)
 	}
 }
 
-@available(macOS 14, *)
 extension Color {
 	var luminosity: Double {
 		#if os(macOS)

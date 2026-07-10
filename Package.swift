@@ -7,7 +7,7 @@ let package = Package(
     name: "TagAlong",
 	 platforms: [
 				 .macOS(.v14),
-				 .iOS(.v14),
+				 .iOS(.v17),
 				 .watchOS(.v10)
 		  ],
     products: [
@@ -30,8 +30,8 @@ let package = Package(
             "TagAlong",
             .product(name: "CloudSeeding", package: "cloudseeding"),
         ]),
-//        .testTarget(
-//            name: "TagAlongTests",
-//            dependencies: ["TagAlong"]),
+        .testTarget(
+            name: "TagAlongTests",
+            dependencies: ["TagAlong"]),
     ]
 )

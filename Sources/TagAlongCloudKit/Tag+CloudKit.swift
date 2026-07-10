@@ -18,7 +18,6 @@ extension CKRecordField<[Tag]> {
 	public static let tags = CKRecordField.codable("tags", DataType.self)
 }
 
-@available(iOS 17.0, macOS 14, *)
 extension Tag {
 	public static var ckRecordType: CKRecord.RecordType { "Tag" }
 
@@ -31,6 +30,7 @@ extension Tag {
 		guard let name: String = record[.tagName] else { return nil }
 		let colorRaw: String? = record[.tagColor]
 		self.init(name, color: colorRaw.map { TagColor($0) })
+		TagStore.register(self)
 	}
 
 	public func ckRecord(in zoneID: CKRecordZone.ID) -> CKRecord {

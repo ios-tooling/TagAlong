@@ -9,7 +9,6 @@ import SwiftUI
 
 /// Displays tag capsules with name and color. Wraps to multiple lines by
 /// default; pass `wraps: false` for the legacy single-row HStack layout.
-@available(iOS 17, macOS 14, *)
 public struct TagsView: View {
 	let tags: [Tag]
 	let showRemove: Bool
@@ -32,19 +31,23 @@ public struct TagsView: View {
 
 	public var body: some View {
 		if !tags.isEmpty {
-			if wraps {
-				FlowLayout {
-					ForEach(tags, id: \.self) { tag in
-						tagCapsule(tag)
+			Group {
+				if wraps {
+					FlowLayout {
+						ForEach(tags, id: \.self) { tag in
+							tagCapsule(tag)
+						}
 					}
-				}
-			} else {
-				HStack(spacing: 4) {
-					ForEach(tags, id: \.self) { tag in
-						tagCapsule(tag)
+				} else {
+					HStack(spacing: 4) {
+						ForEach(tags, id: \.self) { tag in
+							tagCapsule(tag)
+						}
 					}
 				}
 			}
+			.onAppear { TagStore.instance.register(tags) }
+			.onChange(of: tags) { _, newTags in TagStore.instance.register(newTags) }
 		}
 	}
 

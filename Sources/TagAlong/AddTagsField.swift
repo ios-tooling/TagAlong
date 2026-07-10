@@ -10,7 +10,6 @@ import SwiftUI
 /// When `showAllTags` is `true`, all selected tags are displayed as colored
 /// token capsules inside the field. When `false`, only the text input is shown
 /// (the caller is responsible for displaying the current selection elsewhere).
-@available(iOS 17.0, macOS 15, *)
 public struct AddTagsField: View {
     let label: String
     @Binding var tags: [Tag]
@@ -81,6 +80,7 @@ public struct AddTagsField: View {
                 }
 
                 for tag in newTags where !oldLower.contains(tag.name.lowercased()) {
+                    TagStore.register(tag)
                     onTagCreated?(tag)
                 }
 
@@ -99,7 +99,6 @@ public struct AddTagsField: View {
     }
 }
 
-@available(iOS 17.0, macOS 15, *)
 #Preview {
     @Previewable @State var tags: [Tag] = [Tag("Swift", color: .orange), Tag("iOS", color: .blue)]
     let pool: [Tag] = [Tag("Swift", color: .orange), Tag("iOS", color: .blue), Tag("macOS", color: .purple), Tag("SwiftUI"), Tag("Xcode")]
