@@ -11,6 +11,7 @@ import SwiftUI
 /// automatically when decoded, loaded from CloudKit, created in an
 /// `AddTagsField`, or displayed in a `TagsView`, so colors stay consistent
 /// everywhere. Known tags persist to disk between launches.
+@available(iOS 17, macOS 14, *)
 @MainActor @Observable public class TagStore {
 	public static let instance = TagStore()
 
@@ -57,6 +58,7 @@ import SwiftUI
 	}
 }
 
+@available(iOS 17, macOS 14, *)
 public extension TagStore {
 	static nonisolated func register(_ tag: Tag, color: TagColor? = nil) {
 		Task { @MainActor in

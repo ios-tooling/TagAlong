@@ -24,6 +24,7 @@ public struct TokenDelimiters: OptionSet, Sendable {
 /// Pass `tokenColors` to give specific tokens a background color (keyed by
 /// lowercased token name). Pass a `suggestionsProvider` closure to show an
 /// autocomplete row while the field is focused.
+@available(iOS 17, macOS 14, *)
 public struct TokenTextField: View {
     @Binding var tokens: [String]
     var placeholder: String
@@ -167,6 +168,7 @@ public struct TokenTextField: View {
     }
 }
 
+@available(iOS 17, macOS 14, *)
 #Preview {
     @Previewable @State var tokens: [String] = ["Swift", "iOS"]
     let pool = ["Swift", "iOS", "macOS", "SwiftUI", "Xcode"]

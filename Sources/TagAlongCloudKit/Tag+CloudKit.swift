@@ -18,6 +18,7 @@ extension CKRecordField<[Tag]> {
 	public static let tags = CKRecordField.codable("tags", DataType.self)
 }
 
+@available(iOS 17, macOS 14, *)
 extension Tag {
 	public static var ckRecordType: CKRecord.RecordType { "Tag" }
 

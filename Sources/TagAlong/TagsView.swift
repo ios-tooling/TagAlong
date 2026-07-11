@@ -9,6 +9,7 @@ import SwiftUI
 
 /// Displays tag capsules with name and color. Wraps to multiple lines by
 /// default; pass `wraps: false` for the legacy single-row HStack layout.
+@available(iOS 17, macOS 14, *)
 public struct TagsView: View {
 	let tags: [Tag]
 	let showRemove: Bool

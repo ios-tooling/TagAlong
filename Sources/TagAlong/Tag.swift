@@ -33,7 +33,7 @@ public struct Tag: Codable, Sendable, Hashable, Equatable, Identifiable {
 		if let single = try? decoder.singleValueContainer(), let string = try? single.decode(String.self) {
 			self.name = string
 			self.id = string.lowercased()
-			TagStore.register(self)
+			registerWithStore()
 			return
 		}
 
@@ -41,7 +41,13 @@ public struct Tag: Codable, Sendable, Hashable, Equatable, Identifiable {
 		self.name = try container.decode(String.self, forKey: .name)
 		self.color = try container.decodeIfPresent(TagColor.self, forKey: .color)
 		self.id = self.name.lowercased()
-		TagStore.register(self)
+		registerWithStore()
+	}
+
+	func registerWithStore() {
+		if #available(iOS 17, macOS 14, *) {
+			TagStore.register(self)
+		}
 	}
 	
 	public func encode(to encoder: any Encoder) throws {
@@ -56,7 +62,11 @@ public struct Tag: Codable, Sendable, Hashable, Equatable, Identifiable {
 	}
 	
 	@MainActor public var tagColor: Color {
-		TagStore.instance.color(for: self)
+		if #available(iOS 17, macOS 14, *) {
+			return TagStore.instance.color(for: self)
+		}
+		if let color { return color.swiftUIColor }
+		return TagColor.generated(for: name).swiftUIColor
 	}
 }
 

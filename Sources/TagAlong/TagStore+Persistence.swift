@@ -5,6 +5,7 @@
 
 import Foundation
 
+@available(iOS 17, macOS 14, *)
 extension TagStore {
 	static nonisolated var defaultPersistenceURL: URL? {
 		guard let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else { return nil }

@@ -11,6 +11,7 @@ import SwiftUI
 ///
 /// When `stretchLast` is `true` the final subview is widened to fill the
 /// remaining space on its line (useful for an inline text field).
+@available(iOS 16, macOS 13, watchOS 10, *)
 public struct FlowLayout: Layout {
 	public var spacing: CGFloat
 	public var lineSpacing: CGFloat
