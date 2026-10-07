@@ -20,7 +20,7 @@ let package = Package(
             targets: ["TagAlongCloudKit"]),
     ],
 	 dependencies: [
-		.package(url: "https://github.com/ios-tooling/cloudseeding", from: "0.1.8"),
+		.package(url: "https://github.com/ios-tooling/CloudSeeding", from: "0.1.8"),
 	 ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
